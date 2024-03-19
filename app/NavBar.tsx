@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { PiBugDroidFill } from "react-icons/pi";
 
 const NavBar = () => {
+  const currentPath = usePathname();
   const links = [
     { label: "Dashboard", href: "/" },
     { label: "Issues", href: "/issues" },
@@ -17,7 +21,9 @@ const NavBar = () => {
           <Link
             key={link.href}
             href={link.href}
-            className="text-gray-500 hover:text-gray-900 transition-colors"
+            className={`${
+              link.href === currentPath ? "text-gray-900" : "text-gray-500"
+            }  hover:text-gray-800 transition-colors font-medium`}
           >
             {link.label}
           </Link>
