@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PiBugDroidFill } from "react-icons/pi";
+import classNames from "classnames";
+import link from "next/link";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -21,9 +23,11 @@ const NavBar = () => {
           <Link
             key={link.href}
             href={link.href}
-            className={`${
-              link.href === currentPath ? "text-gray-900" : "text-gray-500"
-            }  hover:text-gray-800 transition-colors font-medium`}
+            className={classNames({
+              "text-gray-900": link.href === currentPath,
+              "text-gray-500": link.href !== currentPath,
+              "hover:text-gray-800 transition-colors font-medium": true,
+            })}
           >
             {link.label}
           </Link>
