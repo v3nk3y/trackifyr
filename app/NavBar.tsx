@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PiBugDroidFill } from "react-icons/pi";
 import classNames from "classnames";
-import link from "next/link";
 
 const NavBar = () => {
   const currentPath = usePathname();
