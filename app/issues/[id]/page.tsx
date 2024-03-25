@@ -1,4 +1,6 @@
+import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import prisma from "@/prisma/client";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -18,11 +20,14 @@ const IssueDetailPage = async ({ params }: Props) => {
   //   Display issue details
   return (
     <div>
-      <div>{issue.id}</div>
-      <div>{issue.title}</div>
-      <div>{issue.status}</div>
-      <div>{issue.description}</div>
-      <div>{issue.createdAt.toDateString()}</div>
+      <Heading>{issue.title}</Heading>
+      <Flex gap="3" my="2">
+        <IssueStatusBadge status={issue.status} />
+        <Text size="2">{issue.createdAt.toDateString()}</Text>
+      </Flex>
+      <Card>
+        <Text>{issue.description}</Text>
+      </Card>
     </div>
   );
 };
