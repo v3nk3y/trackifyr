@@ -46,7 +46,7 @@ const IssuesPage = async () => {
   );
 };
 
-//To force dynamic rendering - routes will be rendered for each user req at request time
+//To force dynamic rendering - routes will be rendered for each user req at request time (fixing cache issue)
 export const dynamic = "force-dynamic";
 
 export default IssuesPage;
