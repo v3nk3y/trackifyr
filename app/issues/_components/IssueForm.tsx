@@ -1,6 +1,6 @@
 "use client";
 import { ErrorMessage } from "@/app/components";
-import Spinner from "@/app/components/Spinner";
+import { Spinner } from "@/app/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
