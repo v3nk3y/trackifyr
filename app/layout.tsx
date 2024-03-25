@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body>
-        <Theme appearance="light" accentColor="amber">
+        <Theme accentColor="amber">
           <NavBar />
           <main className="p-10">{children}</main>
         </Theme>
