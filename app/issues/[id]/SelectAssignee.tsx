@@ -8,16 +8,18 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const SelectAssignee = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60secs
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
+
+  const assignIssue = (userId: string) => {
+    axios
+      .patch(`/api/issues/${issue.id}`, {
+        // Check if the user is unassigned then, send null since the db and api expects null for unassigned value
+        assignedToUserId: userId === "Unassigned" ? null : userId,
+      })
+      .catch(() => {
+        toast.error("Oops spmething went wrong. Please try again later.");
+      });
+  };
 
   if (isLoading) return <Skeleton width="6rem" height="1.8rem" />;
 
@@ -28,16 +30,7 @@ const SelectAssignee = ({ issue }: { issue: Issue }) => {
       <Select.Root
         size="2"
         defaultValue={issue.assignedToUserId || "Unassigned"}
-        onValueChange={(userId) => {
-          axios
-            .patch(`/api/issues/${issue.id}`, {
-              // Check if the user is unassigned then, send null since the db and api expects null for unassigned value
-              assignedToUserId: userId === "Unassigned" ? null : userId,
-            })
-            .catch(() => {
-              toast.error("Oops spmething went wrong. Please try again later.");
-            });
-        }}
+        onValueChange={assignIssue}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
@@ -57,5 +50,13 @@ const SelectAssignee = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
+
+const useUsers = () =>
+  useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, //60secs
+    retry: 3,
+  });
 
 export default SelectAssignee;
