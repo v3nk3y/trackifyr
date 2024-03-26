@@ -5,6 +5,7 @@ import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const SelectAssignee = ({ issue }: { issue: Issue }) => {
   const {
@@ -23,30 +24,37 @@ const SelectAssignee = ({ issue }: { issue: Issue }) => {
   if (error) return null;
 
   return (
-    <Select.Root
-      size="2"
-      defaultValue={issue.assignedToUserId || "Unassigned"}
-      onValueChange={(userId) => {
-        axios.patch(`/api/issues/${issue.id}`, {
-          // Check if the user is unassigned then, send null since the db and api expects null for unassigned value
-          assignedToUserId: userId === "Unassigned" ? null : userId,
-        });
-      }}
-    >
-      <Select.Trigger placeholder="Assign..." />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggestions</Select.Label>
-          {/* For un assigning the user form the issue */}
-          <Select.Item value="Unassigned">Unassigned</Select.Item>
-          {users?.map((user) => (
-            <Select.Item key={user.id} value={user.id}>
-              {user.name}
-            </Select.Item>
-          ))}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Select.Root
+        size="2"
+        defaultValue={issue.assignedToUserId || "Unassigned"}
+        onValueChange={(userId) => {
+          axios
+            .patch(`/api/issues/${issue.id}`, {
+              // Check if the user is unassigned then, send null since the db and api expects null for unassigned value
+              assignedToUserId: userId === "Unassigned" ? null : userId,
+            })
+            .catch(() => {
+              toast.error("Oops spmething went wrong. Please try again later.");
+            });
+        }}
+      >
+        <Select.Trigger placeholder="Assign..." />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            {/* For un assigning the user form the issue */}
+            <Select.Item value="Unassigned">Unassigned</Select.Item>
+            {users?.map((user) => (
+              <Select.Item key={user.id} value={user.id}>
+                {user.name}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <Toaster />
+    </>
   );
 };
 
