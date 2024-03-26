@@ -1,12 +1,12 @@
 "use client";
 
 import { Skeleton } from "@/app/components";
-import { User } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const SelectAssignee = () => {
+const SelectAssignee = ({ issue }: { issue: Issue }) => {
   const {
     data: users,
     error,
@@ -23,11 +23,22 @@ const SelectAssignee = () => {
   if (error) return null;
 
   return (
-    <Select.Root defaultValue="" size="2">
+    <Select.Root
+      size="2"
+      defaultValue={issue.assignedToUserId || "Unassigned"}
+      onValueChange={(userId) => {
+        axios.patch(`/api/issues/${issue.id}`, {
+          // Check if the user is unassigned then, send null since the db and api expects null for unassigned value
+          assignedToUserId: userId === "Unassigned" ? null : userId,
+        });
+      }}
+    >
       <Select.Trigger placeholder="Assign..." />
       <Select.Content>
         <Select.Group>
           <Select.Label>Suggestions</Select.Label>
+          {/* For un assigning the user form the issue */}
+          <Select.Item value="Unassigned">Unassigned</Select.Item>
           {users?.map((user) => (
             <Select.Item key={user.id} value={user.id}>
               {user.name}
