@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Link as RadixLink } from "@radix-ui/themes";
+import Link from "next/link";
 
 interface Props {
   href: string;
