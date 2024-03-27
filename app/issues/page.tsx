@@ -4,11 +4,14 @@ import { IssueStatusBadge, TrakifyrLink } from "@/app/components";
 import IssuesToolbar from "./IssuesToolbar";
 import { Issue, Status } from "@prisma/client";
 import Link from "next/link";
-import { ArrowUpIcon } from "@radix-ui/react-icons";
-import { title } from "process";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 
 interface Props {
-  searchParams: { status: Status; orderBy: keyof Issue };
+  searchParams: {
+    status: Status;
+    orderBy: keyof Issue;
+    direction: "asc" | "desc";
+  };
 }
 const IssuesPage = async ({ searchParams }: Props) => {
   const statuses = Object.values(Status);
@@ -22,9 +25,14 @@ const IssuesPage = async ({ searchParams }: Props) => {
     { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
   ];
 
+  const directionAcceptedValues = ["asc", "desc"];
+  const direction = directionAcceptedValues.includes(searchParams.direction)
+    ? searchParams.direction
+    : "asc";
+
   const orderByAcceptedValues = ["title", "status", "createdAt"];
   const orderBy = orderByAcceptedValues.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: "asc" }
+    ? { [searchParams.orderBy]: direction }
     : undefined;
 
   const issues = await prisma.issue.findMany({
@@ -48,13 +56,22 @@ const IssuesPage = async ({ searchParams }: Props) => {
                     query: {
                       ...searchParams,
                       orderBy: column.value,
+                      direction:
+                        column.value === searchParams.orderBy
+                          ? searchParams.direction === "asc"
+                            ? "desc"
+                            : "asc"
+                          : "asc",
                     },
                   }}
                 >
                   {column.label}
-                  {column.value === searchParams.orderBy && (
-                    <ArrowUpIcon className="inline" />
-                  )}
+                  {column.value === searchParams.orderBy &&
+                    (searchParams.direction === "asc" ? (
+                      <ArrowUpIcon className="inline" />
+                    ) : (
+                      <ArrowDownIcon className="inline" />
+                    ))}
                 </Link>
               </Table.ColumnHeaderCell>
             ))}
