@@ -12,8 +12,8 @@ const statuses: { label: string; value?: Status }[] = [
 
 const IssueStatusFilter = () => {
   return (
-    <Select.Root defaultValue="apple">
-      <Select.Trigger />
+    <Select.Root>
+      <Select.Trigger placeholder="Filter by status" />
       <Select.Content>
         <Select.Group>
           {statuses.map((status) => (
