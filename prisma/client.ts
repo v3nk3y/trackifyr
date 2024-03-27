@@ -2,6 +2,10 @@ import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
+  // For Logging purpose
+  // {
+  //   log: ["query"],
+  // }
 };
 
 declare global {
