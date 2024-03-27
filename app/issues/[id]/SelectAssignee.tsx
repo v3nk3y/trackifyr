@@ -37,7 +37,9 @@ const SelectAssignee = ({ issue }: { issue: Issue }) => {
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
             {/* For un assigning the user form the issue */}
-            <Select.Item value="Unassigned">Unassigned</Select.Item>
+            <Select.Item key="unassigned" value="Unassigned">
+              Unassigned
+            </Select.Item>
             {users?.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
