@@ -27,11 +27,16 @@ const IssueChart = ({ open, inProgress, closed }: Props) => {
     <Card>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
-          <XAxis dataKey="label" />
+          <XAxis
+            dataKey="label"
+            tick={{
+              fontSize: 12,
+            }}
+          />
           <YAxis />
           <Bar
             dataKey="value"
-            barSize={60}
+            barSize={30}
             style={{ fill: "var(--accent-9)" }}
           />
         </BarChart>
