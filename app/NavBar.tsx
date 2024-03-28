@@ -1,12 +1,12 @@
 "use client";
 
+import Skeleton from "@/app/components/Skeleton";
 import { Avatar, Container, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PiBugDroidFill } from "react-icons/pi";
-import Skeleton from "@/app/components/Skeleton";
 
 const NavBar = () => {
   return (
@@ -20,7 +20,9 @@ const NavBar = () => {
             </Link>
             <NavLinks />
           </Flex>
-          <AuthStatus />
+          <Flex align="center">
+            <AuthStatus />
+          </Flex>
         </Flex>
       </Container>
     </nav>
@@ -30,7 +32,7 @@ const NavBar = () => {
 const NavLinks = () => {
   const currentPath = usePathname();
   const links = [
-    { label: "Dashboard", href: "/" },
+    { label: "Dashboard", href: "/dashboard" },
     { label: "Issues", href: "/issues" },
   ];
   return (

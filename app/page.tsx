@@ -1,39 +1,44 @@
-import prisma from "@/prisma/client";
-import IssueSummary from "./IssueSummary";
-import LatestIssues from "./LatestIssues";
-import { Flex, Grid } from "@radix-ui/themes";
-import IssueChart from "./IssueChart";
+import { Flex, Heading, Text } from "@radix-ui/themes";
 import { Metadata } from "next";
 
-export default async function Home() {
-  const openIssues = await prisma.issue.count({ where: { status: "OPEN" } });
-  const inProgressIssues = await prisma.issue.count({
-    where: { status: "IN_PROGRESS" },
-  });
-  const closedIssues = await prisma.issue.count({
-    where: { status: "CLOSED" },
-  });
+export default function Home() {
   return (
-    <Grid columns={{ initial: "1", md: "2" }} gap="7">
-      <Flex direction="column" gap="7">
-        <IssueSummary
-          open={openIssues}
-          inProgress={inProgressIssues}
-          closed={closedIssues}
-        />
-        <IssueChart
-          open={openIssues}
-          inProgress={inProgressIssues}
-          closed={closedIssues}
-        />
+    <div className="flex justify-center items-center min-h-[30rem]">
+      <Flex direction="column" gap="8" justify="center" align="center">
+        <Flex direction="column" gap="1" justify="center" align="center">
+          <Heading
+            as="h1"
+            size={{
+              initial: "7",
+              md: "8",
+              xl: "9",
+            }}
+          >
+            Welcome to Trakifyr!
+          </Heading>
+          <Text
+            size={{
+              initial: "3",
+              md: "4",
+              xl: "4",
+            }}
+          >
+            Simplify Your Issue Tracking Process
+          </Text>
+        </Flex>
+        <Text size="3" align="center">
+          Streamline your workflow and conquer project chaos. Our issue tracking
+          app provides a central dashboard, effortless issue creation and
+          editing, a comprehensive list with advanced filtering, and
+          collaborative features to boost productivity, communication, and
+          transparency. Experience the power of efficient issue management!
+        </Text>
       </Flex>
-
-      <LatestIssues />
-    </Grid>
+    </div>
   );
 }
 
 export const metadata: Metadata = {
-  title: "Trakifyr - Dashboard",
-  description: "To view a summarized list of project issues for tracking.",
+  title: "Trakifyr - Home",
+  description: "Home page of the Trakifyr application.",
 };
